@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Afrikaans Pret Speletjie - Grade 1 & 2 🌟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 800px;
+            width: 100%;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .game-mode-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-weight: bold;
+        }
+
+        .game-mode-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .game-mode-btn.active {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            transform: scale(1.05);
+        }
+
+        .score-board {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 1.2em;
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .emoji-icon {
+            font-size: 1.5em;
+        }
+
+        .question-container {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .question-text {
+            font-size: 1.8em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .answer-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            animation: celebrate 0.5s;
+        }
+
+        .answer-btn.incorrect {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            animation: shake 0.5s;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            75% { transform: scale(1.1) rotate(-5deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 20px 0;
+            min-height: 40px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            color: #11998e;
+        }
+
+        .feedback.incorrect {
+            color: #eb3349;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s;
+            font-weight: bold;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .matching-game {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .matching-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .matching-item {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.2em;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .matching-item:hover {
+            transform: scale(1.05);
+        }
+
+        .matching-item.selected {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            transform: scale(1.08);
+        }
+
+        .matching-item.matched {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .word-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.3em;
+            border: 3px solid #4facfe;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s;
+            font-weight: bold;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5em;
+            animation: celebrate-big 1s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes celebrate-big {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .level-indicator {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .question-text {
+                font-size: 1.4em;
+            }
+            
+            .answer-btn {
+                font-size: 1.1em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌟 Afrikaans Pret Speletjie 🌟</h1>
+        <p style="color: white; font-size: 1.2em;">Vir Graad 1 & 2 Leerders / For Grade 1 & 2 Learners</p>
+    </div>
+
+    <div class="game-container">
+        <div class="game-selector">
+            <button class="game-mode-btn" onclick="selectGameMode('quiz')">
+                🎯 Vasvra<br><span style="font-size: 0.8em; opacity: 0.9;">Quiz</span>
+            </button>
+            <button class="game-mode-btn" onclick="selectGameMode('matching')">
+                🔗 Pas Bymekaar<br><span style="font-size: 0.8em; opacity: 0.9;">Matching</span>
+            </button>
+            <button class="game-mode-btn" onclick="selectGameMode('spelling')">
+                ✍️ Spel Dit<br><span style="font-size: 0.8em; opacity: 0.9;">Spelling</span>
+            </button>
+            <button class="game-mode-btn" onclick="selectGameMode('flashcards')">
+                📚 Flitskaarte<br><span style="font-size: 0.8em; opacity: 0.9;">Flashcards</span>
+            </button>
+        </div>
+
+        <div class="level-indicator hidden" id="levelIndicator">
+            Vlak/Level: <span id="currentLevel">1</span>
+        </div>
+
+        <div class="score-board">
+            <div class="score-item">
+                <span class="emoji-icon">⭐</span>
+                <span>Punte/Points: <span id="score">0</span></span>
+            </div>
+            <div class="score-item">
+                <span class="emoji-icon">🎯</span>
+                <span>Reeks/Streak: <span id="streak">0</span></span>
+            </div>
+            <div class="score-item">
+                <span class="emoji-icon">❓</span>
+                <span>Vraag/Question: <span id="questionNumber">0</span>/10</span>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div id="gameArea">
+            <!-- Game content will be dynamically inserted here -->
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="control-buttons">
+            <button class="control-btn" onclick="resetGame()">🔄 Nuwe Spel / New Game</button>
+            <button class="control-btn hidden" id="nextBtn" onclick="nextQuestion()">➡️ Volgende / Next</button>
+        </div>
+    </div>
+
+    <script>
+        // All questions from the Excel file
+        const allQuestions = [
+            {q: "Wat sê ons as ons iemand groet in die oggend?", a: "Goeie more", e: "We say 'Good morning' when greeting someone in the morning."},
+            {q: "Wat sê ons as ons iemand groet in die aand?", a: "Goeie naand", e: "We say 'Good evening' when greeting someone at night."},
+            {q: "Wat sê ons as ons totsiens sê?", a: "Totsiens", e: "We say 'Goodbye' when we leave."},
+            {q: "Wat sê ons as ons dankie wil sê?", a: "Dankie", e: "We say 'Thank you' to show gratitude."},
+            {q: "Wat sê ons as iemand vir ons dankie sê?", a: "Dis 'n plesier", e: "We say 'It's a pleasure' when someone thanks us."},
+            {q: "Wat sê ons as ons jammer voel?", a: "Jammer", e: "We say 'Sorry' when we have done something wrong."},
+            {q: "Wat sê ons as ons vra om iets te kry?", a: "Asseblief", e: "We say 'Please' when we ask for something."},
+            {q: "Wat sê ons as ons iemand ontmoet?", a: "Hallo", e: "We say 'Hello' to greet someone."},
+            {q: "Wat is die kleur van die son?", a: "Geel", e: "The sun is yellow."},
+            {q: "Wat is die kleur van die gras?", a: "Groen", e: "The grass is green."},
+            {q: "Wat is die kleur van die lug?", a: "Blou", e: "The sky is blue."},
+            {q: "Wat sê 'kat' in meervoud?", a: "Katte", e: "The plural of 'cat' is 'cats'."},
+            {q: "Wat sê 'hond' in meervoud?", a: "Honde", e: "The plural of 'dog' is 'dogs'."},
+            {q: "Wat sê 'boek' in meervoud?", a: "Boeke", e: "The plural of 'book' is 'books'."},
+            {q: "Wat sê 'stoel' in meervoud?", a: "Stoele", e: "The plural of 'chair' is 'chairs'."},
+            {q: "Wat sê 'tafel' in meervoud?", a: "Tafels", e: "The plural of 'table' is 'tables'."},
+            {q: "Wat is die klein vorm van 'kat'?", a: "Katjie", e: "The diminutive form of 'cat' is 'kitten'."},
+            {q: "Wat is die klein vorm van 'hond'?", a: "Hondjie", e: "The diminutive form of 'dog' is 'puppy'."},
+            {q: "Wat is die klein vorm van 'seun'?", a: "Seuntjie", e: "The diminutive form of 'boy' is 'little boy'."},
+            {q: "Wat is die klein vorm van 'meisie'?", a: "Meisietjie", e: "The diminutive form of 'girl' is 'little girl'."},
+            {q: "Wat is die klein vorm van 'tafel'?", a: "Tafeltjie", e: "The diminutive form of 'table' is 'small table'."},
+            {q: "Watter dag kom na Maandag?", a: "Dinsdag", e: "Tuesday comes after Monday."},
+            {q: "Watter dag kom na Dinsdag?", a: "Woensdag", e: "Wednesday comes after Tuesday."},
+            {q: "Watter dag kom na Woensdag?", a: "Donderdag", e: "Thursday comes after Wednesday."},
+            {q: "Watter dag kom na Donderdag?", a: "Vrydag", e: "Friday comes after Thursday."},
+            {q: "Watter dag kom voor Maandag?", a: "Sondag", e: "Sunday comes before Monday."},
+            {q: "Wat sê ons as iemand nies?", a: "Gesondheid", e: "We say 'Bless you' when someone sneezes."},
+            {q: "Wat dra jy aan jou voete?", a: "Skoene", e: "We wear shoes on our feet."},
+            {q: "Wat dra jy aan jou kop?", a: "Hoed", e: "We wear a hat on our head."},
+            {q: "Wat dra jy as dit koud is?", a: "Jas", e: "We wear a jacket when it's cold."},
+            {q: "Wat eet jy in die oggend?", a: "Ontbyt", e: "We eat breakfast in the morning."},
+            {q: "Wat eet jy in die middag?", a: "Middagete", e: "We eat lunch at midday."},
+            {q: "Wat eet jy in die aand?", a: "Aandete", e: "We eat dinner in the evening."},
+            {q: "Wat drink ons as ons dors is?", a: "Water", e: "We drink water when we're thirsty."},
+            {q: "Wat gebruik ons om ons tande te borsel?", a: "Tandeborsel", e: "We use a toothbrush to brush our teeth."},
+            {q: "Wat gebruik ons om te skryf?", a: "Potlood", e: "We use a pencil to write."},
+            {q: "Wat gebruik ons om te lees?", a: "Boek", e: "We use a book to read."},
+            {q: "Wat maak 'n hond?", a: "Blaf", e: "A dog barks."},
+            {q: "Wat maak 'n kat?", a: "Miaau", e: "A cat meows."},
+            {q: "Wat maak 'n koei?", a: "Moe", e: "A cow moos."},
+            {q: "Wat maak 'n skaap?", a: "Bla", e: "A sheep baas."},
+            {q: "Wat maak 'n haan?", a: "Kukeleku", e: "A rooster crows."},
+            {q: "Hoeveel bene het 'n mens?", a: "Twee", e: "A person has two legs."},
+            {q: "Hoeveel arms het 'n mens?", a: "Twee", e: "A person has two arms."},
+            {q: "Hoeveel oë het 'n mens?", a: "Twee", e: "A person has two eyes."},
+            {q: "Hoeveel ore het 'n mens?", a: "Twee", e: "A person has two ears."},
+            {q: "Wat gebruik ons om te sien?", a: "Oë", e: "We use our eyes to see."},
+            {q: "Wat gebruik ons om te hoor?", a: "Ore", e: "We use our ears to hear."},
+            {q: "Wat gebruik ons om te ruik?", a: "Neus", e: "We use our nose to smell."},
+            {q: "Wat gebruik ons om te praat?", a: "Mond", e: "We use our mouth to speak."},
+            {q: "Wat gebruik ons om te voel?", a: "Hande", e: "We use our hands to feel."}
+        ];
+
+        // Game state
+        let currentGameMode = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let totalQuestions = 10;
+        let selectedMatchingItem = null;
+        let matchedPairs = 0;
+        let level = 1;
+
+        function selectGameMode(mode) {
+            currentGameMode = mode;
+            
+            // Update active button
+            document.querySelectorAll('.game-mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide level indicator based on game mode
+            const levelIndicator = document.getElementById('levelIndicator');
+            if (mode === 'quiz' || mode === 'spelling') {
+                levelIndicator.classList.remove('hidden');
+            } else {
+                levelIndicator.classList.add('hidden');
+            }
+            
+            resetGame();
+        }
+
+        function resetGame() {
+            score = 0;
+            streak = 0;
+            currentQuestionIndex = 0;
+            matchedPairs = 0;
+            level = 1;
+            
+            // Shuffle and select questions
+            currentQuestions = shuffleArray([...allQuestions]).slice(0, totalQuestions);
+            
+            updateScoreDisplay();
+            updateProgress();
+            
+            if (currentGameMode === '') {
+                document.getElementById('gameArea').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h2 style="color: #667eea; margin-bottom: 20px;">🎮 Kies 'n Speletjie Om Te Begin! 🎮</h2>
+                        <h3 style="color: #764ba2; margin-bottom: 20px;">Choose a Game to Start!</h3>
+                        <p style="font-size: 1.2em; color: #666;">
+                            Kliek op een van die speletjie knoppies hierbo<br>
+                            <span style="font-size: 0.9em; opacity: 0.8;">Click on one of the game buttons above</span>
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (currentGameMode === 'quiz') {
+                startQuizGame();
+            } else if (currentGameMode === 'matching') {
+                startMatchingGame();
+            } else if (currentGameMode === 'spelling') {
+                startSpellingGame();
+            } else if (currentGameMode === 'flashcards') {
+                startFlashcardGame();
+            }
+        }
+
+        function startQuizGame() {
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showGameComplete();
+                return;
+            }
+            
+            const question = currentQuestions[currentQuestionIndex];
+            const options = generateOptions(question.a);
+            
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = `
+                <div class="question-container">
+                    <div class="question-text">${question.q}</div>
+                    <button onclick="showQuestionHelp()" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; margin-top: 10px; cursor: pointer; font-size: 0.9em;">
+                        💡 Help / English
+                    </button>
+                    <div id="questionHelp" style="display: none; margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 8px; font-size: 0.8em; color: #666;">
+                        ${question.e}
+                    </div>
+                </div>
+                <div class="answer-options">
+                    ${options.map(option => `
+                        <button class="answer-btn" onclick="checkQuizAnswer('${option.replace(/'/g, "\\'")}')">${option}</button>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+        
+        function showQuestionHelp() {
+            const helpDiv = document.getElementById('questionHelp');
+            if (helpDiv.style.display === 'none') {
+                helpDiv.style.display = 'block';
+            } else {
+                helpDiv.style.display = 'none';
+            }
+        }
+
+        function generateOptions(correctAnswer) {
+            const options = [correctAnswer];
+            const allAnswers = allQuestions.map(q => q.a);
+            
+            while (options.length < 4) {
+                const randomAnswer = allAnswers[Math.floor(Math.random() * allAnswers.length)];
+                if (!options.includes(randomAnswer)) {
+                    options.push(randomAnswer);
+                }
+            }
+            
+            return shuffleArray(options);
+        }
+
+        function checkQuizAnswer(selectedAnswer) {
+            const question = currentQuestions[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.answer-btn');
+            
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === question.a) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selectedAnswer && selectedAnswer !== question.a) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById('feedback');
+            
+            if (selectedAnswer === question.a) {
+                score += 10;
+                streak++;
+                feedback.innerHTML = `${getPositiveFeedback()}<br><span style="font-size: 0.8em; color: #666; margin-top: 10px; display: block;">${question.e}</span>`;
+                feedback.className = 'feedback correct';
+                showCelebration();
+                
+                // Level up every 5 correct answers
+                if (score % 50 === 0) {
+                    level++;
+                    document.getElementById('currentLevel').textContent = level;
+                    showLevelUpCelebration();
+                }
+            } else {
+                streak = 0;
+                feedback.innerHTML = `Probeer weer! Die regte antwoord is: ${question.a}<br><span style="font-size: 0.8em; color: #666; margin-top: 10px; display: block;">📚 ${question.e}</span>`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            updateScoreDisplay();
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function startMatchingGame() {
+            const matchingPairs = currentQuestions.slice(0, 5);
+            const leftItems = shuffleArray(matchingPairs.map(q => ({text: getMatchingLeft(q), id: q.a})));
+            const rightItems = shuffleArray(matchingPairs.map(q => ({text: q.a, id: q.a})));
+            
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = `
+                <div class="matching-game">
+                    <div class="matching-column">
+                        <h3 style="text-align: center; margin-bottom: 10px; color: #667eea;">Vraag / Question</h3>
+                        ${leftItems.map(item => `
+                            <div class="matching-item" data-id="${item.id}" onclick="selectMatchingItem(this, 'left')">${item.text}</div>
+                        `).join('')}
+                    </div>
+                    <div class="matching-column">
+                        <h3 style="text-align: center; margin-bottom: 10px; color: #667eea;">Antwoord / Answer</h3>
+                        ${rightItems.map(item => `
+                            <div class="matching-item" data-id="${item.id}" onclick="selectMatchingItem(this, 'right')">${item.text}</div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            matchedPairs = 0;
+            selectedMatchingItem = null;
+        }
+
+        function getMatchingLeft(question) {
+            // Simplify questions for matching game
+            if (question.q.includes("kleur")) {
+                return question.q.split("die ")[1].split("?")[0];
+            } else if (question.q.includes("meervoud")) {
+                return question.q.split("'")[1].split("'")[0] + " (meervoud)";
+            } else if (question.q.includes("klein vorm")) {
+                return question.q.split("'")[1].split("'")[0] + " (klein)";
+            } else if (question.q.includes("Wat maak")) {
+                return question.q.split("'n ")[1].split("?")[0];
+            } else {
+                return question.q.substring(0, 30) + "...";
+            }
+        }
+
+        function selectMatchingItem(element, side) {
+            if (element.classList.contains('matched')) {
+                return;
+            }
+            
+            if (!selectedMatchingItem) {
+                selectedMatchingItem = {element, side};
+                element.classList.add('selected');
+            } else {
+                if (selectedMatchingItem.side === side) {
+                    // Deselect if clicking same side
+                    selectedMatchingItem.element.classList.remove('selected');
+                    element.classList.add('selected');
+                    selectedMatchingItem = {element, side};
+                } else {
+                    // Check if match
+                    const id1 = selectedMatchingItem.element.getAttribute('data-id');
+                    const id2 = element.getAttribute('data-id');
+                    
+                    if (id1 === id2) {
+                        // Correct match
+                        selectedMatchingItem.element.classList.add('matched');
+                        selectedMatchingItem.element.classList.remove('selected');
+                        element.classList.add('matched');
+                        
+                        score += 20;
+                        streak++;
+                        matchedPairs++;
+                        
+                        const feedback = document.getElementById('feedback');
+                        // Find the question for this match to show its English explanation
+                        const matchedQuestion = currentQuestions.find(q => q.a === id1);
+                        feedback.innerHTML = `${getPositiveFeedback()}<br><span style="font-size: 0.8em; color: #666; margin-top: 5px; display: block;">${matchedQuestion ? matchedQuestion.e : ''}</span>`;
+                        feedback.className = 'feedback correct';
+                        
+                        showCelebration();
+                        
+                        if (matchedPairs === 5) {
+                            setTimeout(() => {
+                                currentQuestionIndex = totalQuestions;
+                                showGameComplete();
+                            }, 1500);
+                        }
+                    } else {
+                        // Incorrect match
+                        selectedMatchingItem.element.classList.remove('selected');
+                        streak = 0;
+                        
+                        const feedback = document.getElementById('feedback');
+                        feedback.innerHTML = "Probeer weer! 🤔<br><span style='font-size: 0.8em; color: #666;'>Try again!</span>";
+                        feedback.className = 'feedback incorrect';
+                        
+                        setTimeout(() => {
+                            feedback.textContent = '';
+                            feedback.innerHTML = '';
+                        }, 2000);
+                    }
+                    
+                    selectedMatchingItem = null;
+                    updateScoreDisplay();
+                }
+            }
+        }
+
+        function startSpellingGame() {
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showGameComplete();
+                return;
+            }
+            
+            const question = currentQuestions[currentQuestionIndex];
+            
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = `
+                <div class="question-container">
+                    <div class="question-text">${question.q}</div>
+                    <button onclick="showSpellingHelp()" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; margin-top: 10px; cursor: pointer; font-size: 0.9em;">
+                        💡 Help / English
+                    </button>
+                    <div id="spellingHelp" style="display: none; margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 8px; font-size: 0.8em; color: #666;">
+                        ${question.e}
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <input type="text" class="word-input" id="spellingInput" placeholder="Tik jou antwoord hier... / Type your answer here..." onkeypress="if(event.key==='Enter') checkSpelling()">
+                    <button class="submit-btn" onclick="checkSpelling()">✓ Kontroleer / Check</button>
+                </div>
+            `;
+            
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('spellingInput').focus();
+        }
+        
+        function showSpellingHelp() {
+            const helpDiv = document.getElementById('spellingHelp');
+            if (helpDiv.style.display === 'none') {
+                helpDiv.style.display = 'block';
+            } else {
+                helpDiv.style.display = 'none';
+            }
+        }
+
+        function checkSpelling() {
+            const input = document.getElementById('spellingInput');
+            const userAnswer = input.value.trim().toLowerCase();
+            const question = currentQuestions[currentQuestionIndex];
+            const correctAnswer = question.a.toLowerCase();
+            
+            const feedback = document.getElementById('feedback');
+            
+            if (userAnswer === correctAnswer) {
+                score += 15;
+                streak++;
+                feedback.innerHTML = `${getPositiveFeedback()}<br><span style="font-size: 0.8em; color: #666; margin-top: 10px; display: block;">${question.e}</span>`;
+                feedback.className = 'feedback correct';
+                input.style.borderColor = '#38ef7d';
+                input.disabled = true;
+                showCelebration();
+                
+                // Level up for spelling game
+                if (score % 75 === 0) {
+                    level++;
+                    document.getElementById('currentLevel').textContent = level;
+                    showLevelUpCelebration();
+                }
+            } else {
+                streak = 0;
+                feedback.innerHTML = `Nie heeltemal reg nie! Die regte spelling is: ${question.a}<br><span style="font-size: 0.8em; color: #666; margin-top: 10px; display: block;">📚 ${question.e}</span>`;
+                feedback.className = 'feedback incorrect';
+                input.style.borderColor = '#f45c43';
+                input.disabled = true;
+            }
+            
+            updateScoreDisplay();
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function startFlashcardGame() {
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showGameComplete();
+                return;
+            }
+            
+            const question = currentQuestions[currentQuestionIndex];
+            
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = `
+                <div class="question-container" style="cursor: pointer; min-height: 200px;" onclick="flipCard()">
+                    <div id="cardContent" class="question-text">
+                        <div>${question.q}</div>
+                        <div style="margin-top: 20px; font-size: 0.6em; color: #999;">Kliek om die antwoord te sien / Click to see the answer</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="answer-btn" onclick="markFlashcard(true)" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">✓ Ek het dit reg! / I got it right!</button>
+                    <button class="answer-btn" onclick="markFlashcard(false)" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);">✗ Probeer weer / Try again</button>
+                </div>
+            `;
+            
+            document.getElementById('feedback').innerHTML = 'Dink aan die antwoord en kliek om te kontroleer!<br><span style="font-size: 0.8em; opacity: 0.8;">Think of the answer and click to check!</span>';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+
+        function flipCard() {
+            const question = currentQuestions[currentQuestionIndex];
+            const cardContent = document.getElementById('cardContent');
+            
+            cardContent.innerHTML = `
+                <div style="font-size: 1.5em; color: #11998e; margin-bottom: 15px;">${question.a}</div>
+                <div style="font-size: 0.9em; color: #666; padding: 15px; background: #f0f0f0; border-radius: 10px;">
+                    <strong>English:</strong> ${question.e}
+                </div>
+            `;
+        }
+
+        function markFlashcard(correct) {
+            const feedback = document.getElementById('feedback');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            if (correct) {
+                score += 5;
+                streak++;
+                feedback.innerHTML = getPositiveFeedback();
+                feedback.className = 'feedback correct';
+                showCelebration();
+            } else {
+                streak = 0;
+                feedback.innerHTML = `Geen probleem! Probeer weer met die volgende kaart! / No problem! Try again with the next card! 💪<br><span style="font-size: 0.8em; color: #666; margin-top: 10px; display: block;">📚 ${question.e}</span>`;
+                feedback.className = 'feedback';
+            }
+            
+            updateScoreDisplay();
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            updateProgress();
+            
+            if (currentGameMode === 'quiz') {
+                startQuizGame();
+            } else if (currentGameMode === 'spelling') {
+                startSpellingGame();
+            } else if (currentGameMode === 'flashcards') {
+                startFlashcardGame();
+            }
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+            document.getElementById('questionNumber').textContent = Math.min(currentQuestionIndex + 1, totalQuestions);
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestionIndex / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showGameComplete() {
+            const gameArea = document.getElementById('gameArea');
+            const stars = score >= 80 ? '⭐⭐⭐' : score >= 50 ? '⭐⭐' : '⭐';
+            
+            gameArea.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="color: #11998e; font-size: 2.5em; margin-bottom: 20px;">🎉 Baie Goed! / Well Done! 🎉</h2>
+                    <div style="font-size: 3em; margin: 20px 0;">${stars}</div>
+                    <p style="font-size: 1.5em; color: #666; margin: 20px 0;">
+                        Jou finale telling / Your final score:<br>
+                        <strong>${score} punte / points!</strong>
+                    </p>
+                    <p style="font-size: 1.2em; color: #999;">
+                        ${level > 1 ? `Jy het Level ${level} bereik! / You reached Level ${level}!` : 'Jy het goed gedoen! / You did well!'}
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('nextBtn').classList.add('hidden');
+            
+            // Big celebration for game complete
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => showCelebration(), i * 300);
+            }
+        }
+
+        function showCelebration() {
+            const emojis = ['🌟', '⭐', '✨', '🎉', '🎊', '🏆', '👏', '🎯', '💯', '🌈'];
+            const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            celebration.textContent = emoji;
+            document.body.appendChild(celebration);
+            
+            setTimeout(() => {
+                celebration.remove();
+            }, 1000);
+        }
+
+        function showLevelUpCelebration() {
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            celebration.innerHTML = `<div style="text-align: center;">
+                <div style="font-size: 0.5em;">🎯 VLAK OP! / LEVEL UP! 🎯</div>
+                <div>Vlak/Level ${level}</div>
+            </div>`;
+            document.body.appendChild(celebration);
+            
+            setTimeout(() => {
+                celebration.remove();
+            }, 2000);
+        }
+
+        function getPositiveFeedback() {
+            const messages = [
+                "Uitstekend! / Excellent! 🌟",
+                "Fantasties! / Fantastic! 🎉",
+                "Baie goed! / Very good! ⭐",
+                "Wonderlik! / Wonderful! 🏆",
+                "Perfek! / Perfect! 💯",
+                "Briljant! / Brilliant! ✨",
+                "Jy's 'n ster! / You're a star! 🌟",
+                "Ongelooflik! / Incredible! 🎊",
+                "Puik! / Great! 👏",
+                "Knaend! / Smart! 🎯"
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Initialize game
+        resetGame();
+    </script>
+</body>
+</html>
